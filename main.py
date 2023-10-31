@@ -17,12 +17,16 @@ from flet_models import (
     LineaParticipante,
 )
 
+# flet pack main.py --icon "assets/img/logo limpiado.png" --add-data "assets;assets" --product-name BBQBalance --file-description "Aplicacion para hacer ajustes entre los papis y mamis de la cuadrilla cuando se hacen barbacoas"
+
 WIN_HEIGHT:int = 1000
 WIN_WIDTH:int = 1200
 COLORES_GRADIENTE:list = ['#c53c2f', '#f0975f', '#feefdd']
 COLOR_LETRA = '#41474c'
 COLOR_VERDE = '#61b36f'
-SPRITE_PATH = Path('img/sprites')
+COLOR_BLANCO = '#feefdd'
+SPRITE_PATH = Path('/img/sprites')
+SPRITE_LIST = [f'fuego{i}.png' for i in range(1,4)]
 
 async def get_list_dropdown() -> list[ft.dropdown.Option]:
     cuadri:list = await lista_cuadrilla()
@@ -143,15 +147,15 @@ async def main(page: ft.Page):
             color=ft.colors.GREY_300, width=1, dash_pattern=[3, 3]
         ),
         right_axis=ft.ChartAxis(
-            labels_size=40, title=ft.Text("Diferencias", color=COLOR_LETRA), title_size=30,
+            labels_size=40, title=RotuloTexto("Diferencias",15 ,COLOR_LETRA, COLOR_BLANCO), title_size=30,
             show_labels=False
         )
     )
     listview_transacciones:ft.ListView = ft.ListView(spacing=5, padding=5,)    
 
-    animacion_fuego = ft.Image(src=(SPRITE_PATH / 'fuego1.png'))
+    animacion_fuego = ft.Image(src=(SPRITE_PATH / 'fuego4.png'))
 
-    async def animate_sprite(image_path:Path, inner_delay:float):
+    async def animate_sprite(sprite_list:list[str], inner_delay:float):
         """Carga las imagenes de la llama en bucle y de forma asíncrona 
         para simular el efecto parpadeante del fuego
 
@@ -163,8 +167,8 @@ async def main(page: ft.Page):
             _description_
         """
         while True:
-            for sprite in sorted(image_path.iterdir()):
-                animacion_fuego.src = sprite
+            for sprite in sorted(sprite_list):
+                animacion_fuego.src = (SPRITE_PATH / sprite)
                 await page.update_async()
                 await asyncio.sleep(inner_delay)
             await page.update_async()
@@ -176,7 +180,7 @@ async def main(page: ft.Page):
                     ft.Stack([
                         ft.Column(
                             [
-                                RotuloTexto("Resumen", 20, COLOR_LETRA, '#feefdd'),
+                                RotuloTexto("Resumen", 20, COLOR_LETRA, COLOR_BLANCO),
                                 ft.Container(pie_chart, border_radius=10, height=370),
                                 ft.Container(
                                     ft.Column(
@@ -220,7 +224,7 @@ async def main(page: ft.Page):
                 ft.Container(
                     ft.Column(
                         [
-                            RotuloTexto("Ajustes", 20, COLOR_LETRA, '#feefdd'),
+                            RotuloTexto("Ajustes", 20, COLOR_LETRA, COLOR_BLANCO),
                             ft.Container(bar_chart_differences, height=250, border_radius=10),
                             ft.Container(listview_transacciones, expand=True, alignment=ft.alignment.center),
 
@@ -252,7 +256,7 @@ async def main(page: ft.Page):
         text_style=ft.TextStyle(font_family="Open Sans Bold"),
         text_size=18,
         autofocus=True,
-        content_padding=10,
+        content_padding=5,
         options=await get_list_dropdown(), 
         height=40,
         focused_bgcolor='#fac5a0',
@@ -267,7 +271,7 @@ async def main(page: ft.Page):
     concepto_persona = ft.TextField(
                         cursor_color='#c53c2f', 
                         text_size=18, 
-                        content_padding=10, 
+                        content_padding=5, 
                         text_align=ft.TextAlign.CENTER, 
                         label="Concepto", 
                         height=40, 
@@ -282,7 +286,7 @@ async def main(page: ft.Page):
                         suffix_icon=ft.icons.EURO, 
                         cursor_color='#c53c2f', 
                         text_size=20, 
-                        content_padding=10, 
+                        content_padding=5, 
                         text_align=ft.TextAlign.CENTER, 
                         label="Importe", 
                         height=40, 
@@ -313,7 +317,6 @@ async def main(page: ft.Page):
         for idx, linea in enumerate(listview.controls):
             if linea.nombre == nombre:
                 return idx
-
 
     async def mostrar_transacciones(lista_transacciones:list[Transaction]) -> None:
         """Muestra en la listview los ajustes de cuentas con colores
@@ -453,7 +456,7 @@ async def main(page: ft.Page):
         ft.Column(
             [
                 #ft.Text(value="Agregar participantes", color=ft.colors.WHITE, size=20),
-                RotuloTexto("Agregar participantes", 20, COLOR_LETRA, '#feefdd'),
+                RotuloTexto("Agregar participantes", 20, COLOR_LETRA, COLOR_BLANCO),
                 ft.Row(
                     [
                     desplegable_nombres,
@@ -484,7 +487,7 @@ async def main(page: ft.Page):
     parte_listado_participantes = ft.Container(
         ft.Column(
             [
-                RotuloTexto("Listado de participantes", 20, COLOR_LETRA, '#feefdd'),
+                RotuloTexto("Listado de participantes", 20, COLOR_LETRA, COLOR_BLANCO),
                 listview,
             ],
             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
@@ -511,7 +514,9 @@ async def main(page: ft.Page):
 
     await page.add_async(
         contenedor_principal)
-    await animate_sprite(SPRITE_PATH, 0.08)
+    await animate_sprite(SPRITE_LIST, 0.08)
 
 if __name__ == '__main__':
-    ft.app(target=main)
+    ft.app(
+        target=main,
+        assets_dir="assets")
