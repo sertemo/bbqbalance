@@ -2,6 +2,7 @@ import flet as ft
 from some_func import (
     lista_cuadrilla,
     get_color_async,
+    Switch
 )
 from icecream import ic
 from pathlib import Path
@@ -27,6 +28,8 @@ COLOR_VERDE = '#61b36f'
 COLOR_BLANCO = '#feefdd'
 SPRITE_PATH = Path('/img/sprites')
 SPRITE_LIST = [f'fuego{i}.png' for i in range(1,4)]
+
+switch = Switch()
 
 async def get_list_dropdown() -> list[ft.dropdown.Option]:
     cuadri:list = await lista_cuadrilla()
@@ -155,6 +158,16 @@ async def main(page: ft.Page):
 
     animacion_fuego = ft.Image(src=(SPRITE_PATH / 'fuego4.png'))
 
+    def on_fire_click(e: ft.ControlEvent) -> None:
+        """Acciona el switch para apagar o encender la animación del fuego
+
+        Parameters
+        ----------
+        e : ft.ControlEvent
+            _description_
+        """
+        switch.accionar()
+
     async def animate_sprite(sprite_list:list[str], inner_delay:float):
         """Carga las imagenes de la llama en bucle y de forma asíncrona 
         para simular el efecto parpadeante del fuego
@@ -167,11 +180,16 @@ async def main(page: ft.Page):
             _description_
         """
         while True:
-            for sprite in sorted(sprite_list):
-                animacion_fuego.src = (SPRITE_PATH / sprite)
-                await page.update_async()
-                await asyncio.sleep(inner_delay)
-            await page.update_async()
+                if switch.state:
+                    for sprite in sorted(sprite_list):
+                        animacion_fuego.src = (SPRITE_PATH / sprite)
+                        await page.update_async()
+                        await asyncio.sleep(inner_delay)
+                    await page.update_async()
+                else:
+                    await asyncio.sleep(0.1)
+                    await page.update_async()
+
 
     parte_resumenes = ft.Container(
         ft.Row(
@@ -215,10 +233,10 @@ async def main(page: ft.Page):
                 ft.Container(
                     ft.Column([
                         ft.Image(src='img/logo limpiado.png'),
-                        animacion_fuego,
+                        ft.Container(animacion_fuego, on_click=on_fire_click),
                     ]),                     
                     expand=True, 
-                    alignment=ft.alignment.top_center
+                    alignment=ft.alignment.top_center,
                     ),
 
                 ft.Container(

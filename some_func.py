@@ -84,3 +84,10 @@ async def get_color_async(nombre:str, tipo:Literal["avatar", "grafico"]='grafico
     """
     persona_color_dict = await crear_dict_persona_color(tipo)
     return persona_color_dict[nombre]
+
+class Switch:
+    def __init__(self, initial_state:bool=True) -> None:
+        self.state = initial_state
+
+    def accionar(self) -> None:
+        self.state = not self.state
