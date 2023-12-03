@@ -531,7 +531,8 @@ async def main(page: ft.Page):
 
 
     await page.add_async(
-        contenedor_principal)
+        contenedor_principal
+        )
     await animate_sprite(SPRITE_LIST, 0.08)
 
 if __name__ == '__main__':

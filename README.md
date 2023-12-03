@@ -16,3 +16,9 @@ Aplicación sencilla de una sola página con gráficos interactivos
 - Nora y Jon
 - Marion y Olivier
 - Idoia y Eneko
+
+## APP
+![Alt text](assets/img/bbqbalance.JPG)
+
+## Uso
+Simplemente añade participantes a la barbacoa y si han hecho un gasto, rellena el apartado concepto e importe.
