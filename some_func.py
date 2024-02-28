@@ -10,6 +10,7 @@ CUADRILLA = {
     'Marta': 'Andrés',
     'Estela': 'Odei',
     'Idoia': 'Eneko',
+    'Oihane': 'Bruno'
 }
 
 LISTA_COLORES = [
@@ -27,6 +28,8 @@ LISTA_COLORES = [
     '#FF9800',
     '#FB8C00',
     '#F4511E',
+    '#ced42f',
+    '#7CB342',
 ]
 LISTA_COLORES_AVATAR = [
     '#263238',
@@ -43,14 +46,16 @@ LISTA_COLORES_AVATAR = [
     '#C2185B',
     '#D81B60',
     '#E91E63',
+    '#455A64',
+    '#283593',
 ]
 
 
 async def lista_cuadrilla() -> list[str]:
     lista_nombres = []
-    for item in CUADRILLA.items():
-        lista_nombres.append(item[0])
-        lista_nombres.append(item[1])
+    for mujer, hombre in CUADRILLA.items():
+        lista_nombres.append(mujer)
+        lista_nombres.append(hombre)
     return sorted(lista_nombres)
 
 

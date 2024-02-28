@@ -154,7 +154,7 @@ async def main(page: ft.Page):
             show_labels=False
         )
     )
-    listview_transacciones:ft.ListView = ft.ListView(spacing=5, padding=5,)    
+    listview_transacciones:ft.ListView = ft.ListView(spacing=3, padding=3,)    
 
     animacion_fuego = ft.Image(src=(SPRITE_PATH / 'fuego4.png'))
 
@@ -199,7 +199,8 @@ async def main(page: ft.Page):
                         ft.Column(
                             [
                                 RotuloTexto("Resumen", 20, COLOR_LETRA, COLOR_BLANCO),
-                                ft.Container(pie_chart, border_radius=10, height=370),
+                                ft.Container(pie_chart, border_radius=10, height=270),
+                                ft.Container(bar_chart_differences, expand=True, border_radius=10),
                                 ft.Container(
                                     ft.Column(
                                         [
@@ -242,8 +243,7 @@ async def main(page: ft.Page):
                 ft.Container(
                     ft.Column(
                         [
-                            RotuloTexto("Ajustes", 20, COLOR_LETRA, COLOR_BLANCO),
-                            ft.Container(bar_chart_differences, height=250, border_radius=10),
+                            RotuloTexto("Ajustes", 20, COLOR_LETRA, COLOR_BLANCO),                            
                             ft.Container(listview_transacciones, expand=True, alignment=ft.alignment.center),
 
                         ], 
@@ -407,7 +407,7 @@ async def main(page: ft.Page):
         desplegable_nombres.value = ""
        
         await page.add_async()
-   
+
     async def encontrar_opcion(nombre:str) -> ft.Dropdown.options:
         for opcion in desplegable_nombres.options:
             if nombre == opcion.key:
