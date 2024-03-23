@@ -26,3 +26,7 @@ Simplemente añade participantes a la barbacoa y si han hecho un gasto, rellena 
 ## Updates
 29/02/2024 - Añadidos Bruno y Oihane a la lista de la aplicación. Cambiado el layout manteniendo a mano derecha solo los ajustes.
 ![alt text](assets/img/bbqbalance_update1.JPG)
+
+## Mejoras a implementar
+- [] Meter una capa nueva de algortimo para priorizar el pago entre parejas
+- [] Meter opción de realizar un informe y enviarlo por mail a cada participante de la barbacoa
